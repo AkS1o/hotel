@@ -1,95 +1,100 @@
-import { FC } from "react";
-
+import { FC, useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
-function createData(
-	id: number,
-	date: string,
-	name: string,
-	shipTo: string,
-	paymentMethod: string,
-	amount: number,
-) {
-	return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-	createData(
-		0,
-		'16 Mar, 2019',
-		'Elvis Presley',
-		'Tupelo, MS',
-		'VISA ⠀•••• 3719',
-		312.44,
-	),
-	createData(
-		1,
-		'16 Mar, 2019',
-		'Paul McCartney',
-		'London, UK',
-		'VISA ⠀•••• 2574',
-		866.99,
-	),
-	createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-	createData(
-		3,
-		'16 Mar, 2019',
-		'Michael Jackson',
-		'Gary, IN',
-		'AMEX ⠀•••• 2000',
-		654.39,
-	),
-	createData(
-		4,
-		'15 Mar, 2019',
-		'Bruce Springsteen',
-		'Long Branch, NJ',
-		'VISA ⠀•••• 5919',
-		212.79,
-	),
-];
+import http from "../../http_comon"
+import { User, UserRequest } from "./types";
 
 const Users: FC = () => {
+
+	const [users, setUsers] = useState<Array<User>>();
+	const [totalPages, setTotalPages] = useState<number>(1);
+
+	const [page, setPage] = useState<number>(1);
+
+	useEffect(() => {
+		getData(page);
+	}, []);
+
+	const getData = (page: number) => {
+		http.get<UserRequest>("/api/users/", { params: { page: page - 1 } })
+			.then(response => {
+				return response.data;
+			})
+			.then(data => {
+				setUsers(data.content);
+				setTotalPages(data.totalPages);
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
+
+	const onClickPage = (e: any) =>  {
+		let page = e.target.textContent;
+
+		getData(Number(page));
+		setPage(Number(page));
+	}
 
 	return (
 		<>
 			<Grid container spacing={2}>
 				<Grid item xs={8}>
-
-					<Table size="small">
-						<TableHead>
-							<TableRow>
-								<TableCell>Date</TableCell>
-								<TableCell>Name</TableCell>
-								<TableCell>Ship To</TableCell>
-								<TableCell>Payment Method</TableCell>
-								<TableCell align="right">Sale Amount</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.map((row) => (
-								<TableRow key={row.id}>
-									<TableCell>{row.date}</TableCell>
-									<TableCell>{row.name}</TableCell>
-									<TableCell>{row.shipTo}</TableCell>
-									<TableCell>{row.paymentMethod}</TableCell>
-									<TableCell align="right">{`$${row.amount}`}</TableCell>
+					<TableContainer
+						component={Paper}
+						sx={{ m: 3 }}
+					>
+						<Table size="small">
+							<TableHead>
+								<TableRow>
+									<TableCell>Id</TableCell>
+									<TableCell>Display Name</TableCell>
+									<TableCell>Down Votes</TableCell>
+									<TableCell>Location</TableCell>
+									<TableCell>Reputation</TableCell>
+									<TableCell>UpVotes</TableCell>
+									<TableCell>Views</TableCell>
+									<TableCell>WebsiteUrl</TableCell>
 								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-
-					<Stack spacing={2}>
-						<Pagination count={10} />
+							</TableHead>
+							<TableBody>
+								{users && users.map((row) => (
+									<TableRow key={row.id}>
+										<TableCell>{row.id}</TableCell>
+										<TableCell>{row.displayName}</TableCell>
+										<TableCell>{row.downVotes}</TableCell>
+										<TableCell>{row.location}</TableCell>
+										<TableCell>{row.reputation}</TableCell>
+										<TableCell>{row.upVotes}</TableCell>
+										<TableCell>{row.views}</TableCell>
+										<TableCell>{row.websiteUrl}</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<Stack
+						spacing={2}
+						sx={{ m: 3 }}>
+						<Pagination
+							count={totalPages}
+							page={page}
+							boundaryCount={1}
+							variant="outlined"
+							shape="rounded"
+							onClick={ (e) => onClickPage(e) }
+						/>
 					</Stack>
 
 				</Grid>
