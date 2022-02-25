@@ -40,6 +40,13 @@ const Default = () => {
 							sx={{ my: 1, mx: 1.5 }} >
 							Photo
 						</Link>
+						<Link
+							color="inherit"
+							underline="none"
+							href="/hotel"
+							sx={{ my: 1, mx: 1.5 }} >
+							Hotel
+						</Link>
 					</nav>
 					<Button
 						href="#"

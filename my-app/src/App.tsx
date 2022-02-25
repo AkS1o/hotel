@@ -5,6 +5,7 @@ const DefaultLayout = lazy(() => import("./components/Layout/Default"));
 const Home = lazy(() => import("./view/Home"));
 const Photo = lazy(() => import("./view/Photo"));
 const Users = lazy(() => import("./view/Users"));
+const Hotel = lazy(() => import("./view/Hotel"));
 
 function App() {
 	return (
@@ -31,6 +32,12 @@ function App() {
 					<Route path='/photo' element={
 						<Suspense fallback={<div>Loading ...</div>}>
 							<Photo />
+						</Suspense>
+					} />
+
+					<Route path='/hotel' element={
+						<Suspense fallback={<div>Loading ...</div>}>
+							<Hotel />
 						</Suspense>
 					} />
 
