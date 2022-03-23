@@ -1,10 +1,10 @@
 package hotel.repositories;
 
-import hotel.entities.User;
+import hotel.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
-    User findByUsername(String username);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findByName(String Name);
 }

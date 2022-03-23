@@ -1,57 +1,51 @@
 package hotel.entities;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
 @Entity
-@Table(name="Users", schema = "dbo")
+@Data
+@Table(name="tbl_users")
 public class User {
     @Id
-    @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(name = "AboutMe", columnDefinition = "nvarchar")
-    private String aboutMe;
+    private String username;
 
-    @Column(name = "Age", columnDefinition = "int")
-    private Integer age;
+    private String password;
 
-    @Column(name = "CreationDate", nullable = false, columnDefinition = "datetime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private String fullName;
 
-    @Column(name = "DisplayName", length = 40, nullable = false, columnDefinition = "nvarchar")
-    private String displayName;
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(
+            name="tblUserRoles",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="id")})
+    private List<Role> roles;
 
-    @Column(name = "DownVotes", nullable = false, columnDefinition = "int")
-    private Integer  downVotes;
+    private boolean enabled = true;
 
-    @Column(name = "EmailHash", length = 40, columnDefinition = "nvarchar")
-    private String emailHash;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
 
-    @Column(name = "LastAccessDate", nullable = false, columnDefinition = "datetime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastAccessDate;
 
-    @Column(name = "Location", length = 100, columnDefinition = "nvarchar")
-    private String location;
+    public User() {
+        roles=new ArrayList<Role>();
+    }
 
-    @Column(name = "Reputation", nullable = false, columnDefinition = "int")
-    private Integer  reputation;
-
-    @Column(name = "UpVotes", nullable = false, columnDefinition = "int")
-    private Integer  upVotes;
-
-    @Column(name = "Views", nullable = false, columnDefinition = "int")
-    private Integer views;
-
-    @Column(name = "WebsiteUrl", length = 200, columnDefinition = "nvarchar")
-    private String websiteUrl;
-
-    @Column(name = "AccountId", columnDefinition = "int")
-    private int accountId;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
+        roles=new ArrayList<Role>();
+    }
 }
