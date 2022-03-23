@@ -8,4 +8,6 @@ public interface StorageService {
     Resource loadAsResource(String filename);
 
     String save(String base64);
+
+    void delete(String name);
 }

@@ -68,4 +68,13 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("The problem of converting and saving base64", e);
         }
     }
+
+    @Override
+    public void delete(String name) {
+        try {
+            Files.deleteIfExists(Paths.get(rootLocation.toString(), name));
+        } catch (Exception ex) {
+            throw new StorageException("File with name" + name + "doesn't exist.", ex);
+        }
+    }
 }

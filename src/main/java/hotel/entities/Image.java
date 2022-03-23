@@ -15,10 +15,10 @@ public class Image {
     @Column(name="name", length = 250)
     private String name;
 
-    @ManyToOne
-    private Hotel hotel;
+    @Column(name = "hotel_id")
+    private Integer hotelId;
 
-    public Image(String name) {
-        this.name = name;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id", nullable = false, insertable = false, updatable = false)
+    private Hotel hotel;
 }

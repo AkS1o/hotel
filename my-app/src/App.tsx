@@ -5,7 +5,9 @@ const DefaultLayout = lazy(() => import("./components/Layout/Default"));
 const Home = lazy(() => import("./view/Home"));
 const Photo = lazy(() => import("./view/Photo"));
 const Users = lazy(() => import("./view/Users"));
-const Hotel = lazy(() => import("./view/Hotel"));
+const HotelHome = lazy(() => import("./view/Hotel/Home"));
+const HotelCreate = lazy(() => import("./view/Hotel/Create"));
+const HotelUpdate = lazy(() => import("./view/Hotel/Update"));
 
 function App() {
 	return (
@@ -37,7 +39,19 @@ function App() {
 
 					<Route path='/hotel' element={
 						<Suspense fallback={<div>Loading ...</div>}>
-							<Hotel />
+							<HotelHome />
+						</Suspense>
+					} />
+
+					<Route path='/hotel/create' element={
+						<Suspense fallback={<div>Loading ...</div>}>
+							<HotelCreate />
+						</Suspense>
+					} />
+
+					<Route path='/hotel/update' element={
+						<Suspense fallback={<div>Loading ...</div>}>
+							<HotelUpdate />
 						</Suspense>
 					} />
 

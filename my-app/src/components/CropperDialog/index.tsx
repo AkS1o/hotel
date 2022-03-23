@@ -7,13 +7,16 @@ import Box from '@mui/material/Box';
 
 import Button from '@mui/material/Button';
 
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import "cropperjs/dist/cropper.css";
+import { styled } from '@mui/material/styles';
 
+import "cropperjs/dist/cropper.css";
 import { ICropperDialog } from "./type";
 
 const CropperDialog: FC<ICropperDialog> = ({ getImage }) => {
@@ -61,25 +64,31 @@ const CropperDialog: FC<ICropperDialog> = ({ getImage }) => {
         setImageCropper(undefined);
     };
 
+    const Input = styled('input')({
+        display: 'none',
+    });
+
     return (
         <>
-            <Box sx={{ mt: 1, }}>
-                <label htmlFor="Image">
-                    <img
-                        src="https://cdn.picpng.com/icon/upload-files-icon-66764.png"
-                        style={{
-                            width: "200px",
-                            cursor: "pointer"
-                        }}
-                        alt="avatar" />
+            <Box sx={{ my: 1, }}>
+                <label htmlFor="contained-button-file">
+                    <Input
+                        id="contained-button-file"
+                        accept="image/*"
+                        type="file"
+                        multiple
+                        onChange={handleChangeImage}
+                    />
+                    <Button
+                        variant="contained"
+                        component="span"
+                    >
+                        <PhotoCamera
+                            sx={{ mr: 1 }}
+                        />
+                        Upload image
+                    </Button>
                 </label>
-                <input
-                    type="file"
-                    name="Image"
-                    id="Image"
-                    style={{ display: "none" }}
-                    onChange={handleChangeImage}
-                />
             </Box>
 
             <Dialog

@@ -1,7 +1,10 @@
 package hotel.entities;
 
 import lombok.Data;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,4 +19,7 @@ public class Hotel {
 
     @Column(name="description",length = 1000)
     private String description;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
 }
