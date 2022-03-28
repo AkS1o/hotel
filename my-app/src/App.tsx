@@ -1,6 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
+const AuthLayout = lazy(() => import("./components/Layout/Auth"));
+const Login = lazy(() => import("./view/Auth/Login"));
+
 const DefaultLayout = lazy(() => import("./components/Layout/Default"));
 const Home = lazy(() => import("./view/Home"));
 const Photo = lazy(() => import("./view/Photo"));
@@ -55,6 +58,18 @@ function App() {
 						</Suspense>
 					} />
 
+				</Route>
+
+				<Route path='/' element={
+					<Suspense fallback={<div>Loading ...</div>}>
+						<AuthLayout />
+					</Suspense>
+				} >
+					<Route path='/login' element={
+						<Suspense fallback={<div>Loading ...</div>}>
+							<Login />
+						</Suspense>
+					} />
 				</Route>
 			</Routes>
 		</>

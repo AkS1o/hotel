@@ -1,10 +1,81 @@
+import { useEffect, useState } from 'react';
+import jwt from 'jsonwebtoken';
+
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+
+import { IUser } from '../../../view/Auth/Login/type';
+
 const Default = () => {
+	const [token, setToken] = useState<string>(localStorage.token);
+	const [username, setUsername] = useState<string>("");
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+	const isMenuOpen = Boolean(anchorEl);
+
+	useEffect(() => {
+		if (token) {
+			AuthUser(token);
+		}
+	}, [])
+
+	const AuthUser = async (token: string) => {
+		const user = await jwt.decode(token as string) as IUser;
+		setUsername(user.username);
+	}
+
+	const logout = () => {
+		localStorage.removeItem('token');
+		handleMenuClose();
+	}
+
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+	};
+
+	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const menuId = 'account-menu';
+	const renderMenu = (
+		<Menu
+			sx={{ mt: '24px' }}
+			anchorEl={anchorEl}
+			anchorOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+			id={menuId}
+			keepMounted
+			transformOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+			open={isMenuOpen}
+			onClose={handleMenuClose} >
+			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+			<MenuItem
+				sx={{
+					textTransform: 'capitalize'
+				}}
+				component={Button}
+				href="/"
+				onClick={logout}>
+				Logout
+			</MenuItem>
+		</Menu>
+	);
+
 	return (
 		<>
 			<AppBar
@@ -48,14 +119,34 @@ const Default = () => {
 							Hotel
 						</Link>
 					</nav>
-					<Button
-						href="#"
-						variant="outlined"
-						sx={{ my: 1, mx: 1.5 }} >
-						Login
-					</Button>
+					{token ? (
+						
+							<Box>
+								{username}
+								<IconButton
+									size="large"
+									edge="end"
+									aria-label="account of current user"
+									aria-controls={menuId}
+									aria-haspopup="true"
+									onClick={handleProfileMenuOpen}
+									color="inherit"
+									sx={{ p: 0 }}
+								>
+									<AccountCircle />
+								</IconButton>
+							</Box>
+					) : (
+						<Button
+							href="/login"
+							variant="outlined"
+							sx={{ my: 1, mx: 1.5 }} >
+							Login
+						</Button>
+					)}
 				</Toolbar>
 			</AppBar>
+			{renderMenu}
 		</>
 	)
 };
