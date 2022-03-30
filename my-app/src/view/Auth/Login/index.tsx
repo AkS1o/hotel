@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import http from "../../../http_comon";
-import { ILoginResponse } from "./type";
+import { ILoginResponse } from "../type";
 
 const Login: FC = () => {
     const navigator = useNavigate();
@@ -21,7 +21,7 @@ const Login: FC = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-       const response = await http.post<ILoginResponse>("api/auth/login", {
+        const response = await http.post<ILoginResponse>("api/auth/login", {
             username: data.get('email'),
             password: data.get('password')
         });

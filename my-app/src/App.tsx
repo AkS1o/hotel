@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 const AuthLayout = lazy(() => import("./components/Layout/Auth"));
 const Login = lazy(() => import("./view/Auth/Login"));
+const SignUp = lazy(() => import("./view/Auth/SignUp"));
 
 const DefaultLayout = lazy(() => import("./components/Layout/Default"));
 const Home = lazy(() => import("./view/Home"));
@@ -68,6 +69,11 @@ function App() {
 					<Route path='/login' element={
 						<Suspense fallback={<div>Loading ...</div>}>
 							<Login />
+						</Suspense>
+					} />
+					<Route path='/sign-up' element={
+						<Suspense fallback={<div>Loading ...</div>}>
+							<SignUp />
 						</Suspense>
 					} />
 				</Route>

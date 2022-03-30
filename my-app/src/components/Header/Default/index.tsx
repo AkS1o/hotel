@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-import { IUser } from '../../../view/Auth/Login/type';
+import { IUser } from '../../../view/Auth/type';
 
 const Default = () => {
 	const [token, setToken] = useState<string>(localStorage.token);
@@ -120,29 +120,37 @@ const Default = () => {
 						</Link>
 					</nav>
 					{token ? (
-						
-							<Box>
-								{username}
-								<IconButton
-									size="large"
-									edge="end"
-									aria-label="account of current user"
-									aria-controls={menuId}
-									aria-haspopup="true"
-									onClick={handleProfileMenuOpen}
-									color="inherit"
-									sx={{ p: 0 }}
-								>
-									<AccountCircle />
-								</IconButton>
-							</Box>
+
+						<Box>
+							{username}
+							<IconButton
+								size="large"
+								edge="end"
+								aria-label="account of current user"
+								aria-controls={menuId}
+								aria-haspopup="true"
+								onClick={handleProfileMenuOpen}
+								color="inherit"
+								sx={{ p: 0 }}
+							>
+								<AccountCircle />
+							</IconButton>
+						</Box>
 					) : (
-						<Button
-							href="/login"
-							variant="outlined"
-							sx={{ my: 1, mx: 1.5 }} >
-							Login
-						</Button>
+						<>
+							<Button
+								href="/login"
+								variant="outlined"
+								sx={{ my: 1, mx: 1.5 }} >
+								Login
+							</Button>
+							<Button
+								href="/sign-up"
+								variant="contained"
+								sx={{ my: 1, mx: 1.5 }} >
+								Sign Up
+							</Button>
+						</>
 					)}
 				</Toolbar>
 			</AppBar>
